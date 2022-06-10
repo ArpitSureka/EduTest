@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class Question(models.Model):
@@ -17,3 +18,11 @@ class Question(models.Model):
 
     def __str__(self):
         return self.title
+
+    def started(self):
+        now = timezone.now()
+        return now >= self.start_time
+
+    def ended(self):
+        now = timezone.now()
+        return now >= self.end_time

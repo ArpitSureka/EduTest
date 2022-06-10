@@ -1,2 +1,9 @@
 ./media/uploads/ 
 db.sqlite3
+*.DS_Store
+venv/*
+**/__pycache__/
+**/migrations/
+backend/db.sqlite3
+**/.idea/
+**.log**
