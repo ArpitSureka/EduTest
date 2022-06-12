@@ -21,6 +21,8 @@ class Profile(models.Model):
     mobile_no = models.CharField(max_length=10, default="")
     ismobVerified = models.BooleanField(blank=False, default=False)
     school = models.CharField(max_length=200, default="")
+    auth_token = models.CharField(max_length=100,default="")
+    is_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username} Profile'
