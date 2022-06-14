@@ -10,32 +10,64 @@
     li {
         display: inline;
     }
+
     iframe {
         overflow: hidden;
     }
 </style>
 
 <div class="container" style = "margin-bottom: 30px;margin-top: 30px;">
-<div class="row">
-    <div class="col-8" style="overflow-x: hidden;border:1px solid rgb(218, 218, 218);border-radius: 10px;">
-        <embed scrolling="no" frameborder="0"
-            src="../media/{{ question.paper_file }}#scrollbar=0&toolbar=0&navpanes=0&view=FitH" width="110%"
-            height="600px" style="transform: translate(-25px,-5px)"></embed>
-    </div>
-    <div class="col-3" style = "margin-left:30px;padding: 20px 20px 20px 40px;border:1px solid rgb(218, 218, 218);border-radius: 10px; height: 590px">
-        <form method="POST">
-            {% for field in form %}
+    <div class="row">
+        <div class="col-8" style="overflow-x: hidden;border:1px solid rgb(218, 218, 218);border-radius: 10px;">
+            <embed scrolling="no" frameborder="0"
+                src="../media/{{ question.paper_file }}#scrollbar=0&toolbar=0&navpanes=0&view=FitH" width="110%"
+                height="600px" style="transform: translate(-25px,-5px)"></embed>
+        </div>
+        <div class="col-3" style = "margin-left:30px;padding: 20px 20px 20px 40px;border:1px solid rgb(218, 218, 218);border-radius: 10px; height: 590px">
+            <form method="POST">
+                {% csrf_token %}
+                <!-- {{form}} -->
+                {% for field in form %}
                     <div class = "row">
                         <div class = "col-1"><label class="my_class" for="{{ field.auto_id }}"><b>{{ field.label }}</b></label></div>
                         <div class = "col-10">{{ field }}</div>
                     </div>
                 {% endfor %}
-                <button class = "btn btn-primary" type="submit" style = "float:right;margin-right: 10px;">Submit</button>
-            <button type="submit">Submit</button>
-        </form>
+                <button id = "SubmitButton" class = "btn btn-primary" type="submit" style = "float:right;margin-right: 10px;">Submit</button>
+            </form>
+            <span id='Timer' style='color: red;'></span>
+        </div>
     </div>
+
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var defaultFormat = "MMM. D, YYYY, H:mm a"
+    var endtime = moment("{{question.end_time}}",defaultFormat).format("MMM. D, YYYY, HH:mm:ss")
+    var countDownDate = new Date(endtime).getTime();
 
+    var x = setInterval(function() {
 
+      var now = new Date().getTime();
+
+      var distance = countDownDate - now;
+
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var hoursp = (hours / 10 < 1) ? "0" : "";
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var minutesp = (minutes / 10 < 1) ? "0" : "";
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      var secondsp = (seconds / 10 < 1) ? "0" : "";
+
+      document.getElementById("Timer").innerHTML = "TIMER : " +  hoursp + hours + " : "
+      + minutesp + minutes + " : " + secondsp + seconds ;
+
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("SubmitButton").click();
+        document.getElementById("Timer").innerHTML = "Test Finished";
+    }
+}, 1000);
+</script>
 
 {% endblock %}

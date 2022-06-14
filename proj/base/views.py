@@ -1,4 +1,5 @@
 from django.contrib import messages
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from .models import Question
 from django.contrib.auth.decorators import login_required
@@ -17,7 +18,7 @@ def home(request):
     user_profile = Profile.objects.filter(user=request.user).first()
     # if user_profile.first_name == "" or user_profile.mobile_no == "" or user_profile.classs==0:
     #     return redirect('profile_update')
-    if user_profile.mobile_no=="":
+    if user_profile.mobile_no=="" or  user_profile.first_name=="":
         return redirect('profile_update')
     questions = Question.objects.filter(classs=user_profile.classs)
     for question in questions:
@@ -26,7 +27,17 @@ def home(request):
     submissions = Submission.objects.filter(user = request.user, submitted = True)
     pending = Submission.objects.filter(user = request.user, submitted = False)
     count = len(submissions)
-    return render(request, 'base/home.html', {'questions': questions, 'profile': user_profile, 'submissions':submissions, 'pending':pending, 'count':count})
+    submission1 = len(Submission.objects.filter(
+        user=request.user, submitted=True, date_of_submission=datetime.now().date()))
+    submission2 = len(Submission.objects.filter(
+        user=request.user, submitted=True, date_of_submission=(datetime.now()-timedelta(hours=24)).date()))
+    submission3 = len(Submission.objects.filter(
+        user=request.user, submitted=True, date_of_submission=(datetime.now()-timedelta(hours=24*2)).date()))
+    submission4 = len(Submission.objects.filter(
+        user=request.user, submitted=True, date_of_submission=(datetime.now()-timedelta(hours=24*3)).date()))
+    submission5 = len(Submission.objects.filter(
+        user=request.user, submitted=True, date_of_submission=(datetime.now()-timedelta(hours=24*4)).date()))
+    return render(request, 'base/home.html', {'questions': questions, 'profile': user_profile, 'submissions': submissions, 'pending': pending, 'count': count, 'submission1': submission1, 'submission2': submission2, 'submission3': submission3, 'submission4': submission4, 'submission5': submission5})
 
 
 @login_required
@@ -42,8 +53,12 @@ def profile_update(request):
         classs = form['classs'].value()
         mobile_no = form['mobile_no'].value()
         school = form['school'].value()
+        user = request.user
         profile = Profile.objects.filter(user=request.user).first()
         profile.first_name=first_name
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
         profile.last_name=last_name
         profile.classs=classs
         profile.mobile_no=mobile_no
@@ -53,7 +68,6 @@ def profile_update(request):
     else:
         form = ProfileUpdateForm()
     return render(request, 'base/profile_update.html', {'form': form})
-
 
 @login_required
 def detail_view(request, pk):
@@ -70,7 +84,7 @@ def detail_view(request, pk):
         submission = Submission(
             question=question, submitted=False, submitted_answer="", user=request.user)
         submission.save()
-    return render(request, 'base/question_detail.html', {'question': question, 'submission': submission, 'all_submissions': all_submissions})
+    return render(request, 'base/question_detail.html', {'question': question, 'submission': submission, 'all_submissions': all_submissions,'profiles':Profile.objects.all()})
 
 
 @login_required

@@ -1,5 +1,6 @@
 from django.db import models
 from base.models import Question
+import datetime
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -9,6 +10,7 @@ class Submission(models.Model):
     marks_obtd = models.IntegerField(default=0)
     submitted = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_of_submission = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return f'{self.id}'
@@ -19,18 +21,9 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=200, default = "")
     classs = models.IntegerField(default=0)
     mobile_no = models.CharField(max_length=10, default="")
-    ismobVerified = models.BooleanField(blank=False, default=False)
     school = models.CharField(max_length=200, default="")
     auth_token = models.CharField(max_length=100,default="")
     is_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username} Profile'
-
-class phoneModel(models.Model):
-    Mobile = models.IntegerField(blank=False)
-    isVerified = models.BooleanField(blank=False, default=False)
-    counter = models.IntegerField(default=0, blank=False)
-
-    def __str__(self):
-        return str(self.Mobile)
