@@ -20,13 +20,18 @@ def home(request):
     #     return redirect('profile_update')
     if user_profile.mobile_no=="" or  user_profile.first_name=="":
         return redirect('profile_update')
-    questions = Question.objects.filter(classs=user_profile.classs)
+    questions = Question.objects.filter(classs=user_profile.classs).order_by('start_time')
     for question in questions:
         if not Submission.objects.filter(question=question, user=request.user):
             Submission(question=question, user=request.user, submitted=False).save()
     submissions = Submission.objects.filter(user = request.user, submitted = True)
-    pending = Submission.objects.filter(user = request.user, submitted = False)
-    count = len(submissions)
+    pending_raw = Submission.objects.filter(user = request.user, submitted = False)
+    pending = []
+    for sub in pending_raw:
+        if not sub.question.ended():
+            pending.append(sub)
+    count1 = len(submissions)
+    count2 = len(pending)
     submission1 = len(Submission.objects.filter(
         user=request.user, submitted=True, date_of_submission=datetime.now().date()))
     submission2 = len(Submission.objects.filter(
@@ -37,7 +42,7 @@ def home(request):
         user=request.user, submitted=True, date_of_submission=(datetime.now()-timedelta(hours=24*3)).date()))
     submission5 = len(Submission.objects.filter(
         user=request.user, submitted=True, date_of_submission=(datetime.now()-timedelta(hours=24*4)).date()))
-    return render(request, 'base/home.html', {'questions': questions, 'profile': user_profile, 'submissions': submissions, 'pending': pending, 'count': count, 'submission1': submission1, 'submission2': submission2, 'submission3': submission3, 'submission4': submission4, 'submission5': submission5})
+    return render(request, 'base/home.html', {'questions': questions, 'profile': user_profile, 'submissions': submissions, 'pending': pending, 'count1': count1,'count2': count2, 'submission1': submission1, 'submission2': submission2, 'submission3': submission3, 'submission4': submission4, 'submission5': submission5})
 
 
 @login_required
@@ -76,7 +81,7 @@ def detail_view(request, pk):
         return redirect('login')
     question = Question.objects.get(pk=pk)
     all_submissions = Submission.objects.filter(
-        question=question, submitted=True)
+        question=question, submitted=True).order_by('-marks_obtd')
     if Submission.objects.filter(question=question, user=request.user).first():
         submission = Submission.objects.filter(
             question=question, user=request.user).first()
