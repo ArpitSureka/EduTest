@@ -18,7 +18,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.tokens import default_token_generator
 from django.db.models.query_utils import Q
 from django.utils.encoding import force_bytes
-from .models import phoneModel
+# from .models import phoneModel
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import pyotp
