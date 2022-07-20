@@ -7,3 +7,4 @@ venv/*
 backend/db.sqlite3
 **/.idea/
 **.log**
+proj/media/uploads/

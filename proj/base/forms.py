@@ -1,3 +1,4 @@
+
 from django import forms
 
 CHOICES = [('A', 'A'),
@@ -12,6 +13,7 @@ class SubmissionForm(forms.Form):
         for i in range(0, n):
             self.fields["Question %d" % (i+1)] = forms.ChoiceField(
                 choices=CHOICES, widget=forms.RadioSelect(attrs={'id': 'field{{i+1}}'}), required=False, label = i+1)
+
 
 class ProfileUpdateForm(forms.Form):
     first_name = forms.CharField()

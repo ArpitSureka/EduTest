@@ -203,11 +203,12 @@
 
     <br><br><br><br><br><br>
 
-    <a id="attempt-btn" href="{% url 'answer-form' question.id %}">Attempt</a>
+    <a id="attempt-btn" href="{% url 'environment-check' question.id %}">Attempt</a>
     <br><br><br><br><br><br>
     {% endif %}
 
 </div>
+{% include 'base/footer.html' %}
 
 <script>
     document.getElementById('marks-display').innerText = "24"
