@@ -10,8 +10,8 @@ Online Classes, Assessments, Proctored Exams, Assignments, Auto-grading — all 
 
 ### Screenshots
 
-![Screenshot94 info](.\images\Screenshot94.png)
-![Screenshot95 info](.\images\Screenshot95.png)
-![Screenshot96 info](.\images\Screenshot96.png)
-![Screenshot97 info](.\images\Screenshot97.png)
-![Screenshot98 info](.\images\Screenshot98.png)
+![Screenshot94 info](https://raw.githubusercontent.com/ArpitSureka/EduTest/main/images/Screenshot94.png)
+![Screenshot95 info](https://raw.githubusercontent.com/ArpitSureka/EduTest/main/images/Screenshot95.png)
+![Screenshot96 info](https://raw.githubusercontent.com/ArpitSureka/EduTest/main/images/Screenshot96.png)
+![Screenshot97 info](https://raw.githubusercontent.com/ArpitSureka/EduTest/main/images/Screenshot97.png)
+![Screenshot98 info](https://raw.githubusercontent.com/ArpitSureka/EduTest/main/images/Screenshot98.png)
